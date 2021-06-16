@@ -6,4 +6,4 @@ spring:
     name: customer
   data:
     mongodb:
-      uri: mongodb://localhost:27017/meseroapp
+      uri: mongodb://localhost:27017/customer
