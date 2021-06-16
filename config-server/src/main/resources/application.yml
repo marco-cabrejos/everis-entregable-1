@@ -4,5 +4,4 @@ server:
 spring:  cloud:    config:      server:        git:          uri: https://github.com/marco-cabrejos/everis-entregable-1.git
           searchPaths: config-data
           username: marco-cabrejos
-          password: Mar12cab19  security:    user:      name: root
-      password: secret
+          password: Mar12cab19
