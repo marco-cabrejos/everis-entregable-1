@@ -1,0 +1,23 @@
+{
+    "product": {
+        "productName" : ""
+    },
+    "customerOwner": [
+        {
+            "name" : "",
+            "indenityType" : "",
+            "indentityNumber" : "",
+            "customerType" : ""
+        }
+    ],
+    "authorizedSigner": [
+        {
+            "name" : "",
+            "indenityType" : "",
+            "indentityNumber" : "",
+            "customerType" : ""
+        }
+    ],
+    "amount" : ,
+    "purchaseDate" : ""
+}
