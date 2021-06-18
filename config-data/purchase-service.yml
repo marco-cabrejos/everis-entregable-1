@@ -12,3 +12,6 @@ topic:
   name: purchase-topic
   partitions: 1
   replicas: 1
+
+kafka:
+  uri: localhost:9092
