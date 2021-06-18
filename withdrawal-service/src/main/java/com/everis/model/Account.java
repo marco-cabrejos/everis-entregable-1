@@ -13,8 +13,12 @@ import lombok.Data;
 @Data
 public class Account {
 	@Id
+	/*@Field("id")
+	private String internalId;
+	
+	@Field(name = "accountId")*/
 	private String id;
-
+	
 	@Field(name = "accountNumber")
 	private String accountNumber;
 	
