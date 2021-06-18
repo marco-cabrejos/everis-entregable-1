@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.everis.model.Account;
 import com.everis.service.IAccountService;
+import com.everis.topic.AccountProducer;
 
 import reactor.core.publisher.Mono;
 
@@ -27,6 +28,9 @@ public class AccountController {
 	
 	@Autowired
 	private IAccountService service;
+	
+	@Autowired
+	private AccountProducer producer;
 	
 	@GetMapping("/welcome")
 	public Mono<ResponseEntity<String>> welcome(){
@@ -74,10 +78,13 @@ public class AccountController {
 	public Mono<ResponseEntity<Account>> create(@RequestBody Account account, final ServerHttpRequest request){
 		
 		return service.create(account)
-				.map(createdObject -> ResponseEntity
-						.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
-						.contentType(MediaType.APPLICATION_JSON)
-						.body(createdObject));
+				.flatMap(createdObject -> {
+					producer.sendCreatedAccount(createdObject);
+					return Mono.just(ResponseEntity
+							.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
+							.contentType(MediaType.APPLICATION_JSON)
+							.body(createdObject));
+				});
 				
 	}
 	
