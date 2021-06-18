@@ -1,0 +1,17 @@
+server:
+  port: 8095
+  
+spring:
+  application:
+    name: withdrawal-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/withdrawal
+
+topic:
+  name: withdrawal-topic
+  partitions: 1
+  replicas: 1
+
+kafka:
+  uri: localhost:9092
