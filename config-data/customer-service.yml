@@ -7,3 +7,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/customer
+      
+topic:
+  groupid: customer-consumer
+  purchase:
+    names: purchase-topic
