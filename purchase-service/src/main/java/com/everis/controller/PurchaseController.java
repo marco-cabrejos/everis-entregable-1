@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.everis.model.Purchase;
 import com.everis.service.IPurchaseService;
+import com.everis.topic.producer.PurchaseProducer;
 
 import reactor.core.publisher.Mono;
 
@@ -27,6 +28,9 @@ public class PurchaseController {
 
 	@Autowired
 	private IPurchaseService service;
+	
+	@Autowired
+	private PurchaseProducer producer;
 	
 	@GetMapping("/welcome")
 	public Mono<ResponseEntity<String>> welcome(){
@@ -99,10 +103,13 @@ public class PurchaseController {
 					return a;
 				})
 				.flatMap(service::update)
-				.map(objectUpdated -> ResponseEntity
-						.ok()
-						.contentType(MediaType.APPLICATION_JSON)
-						.body(objectUpdated))
+				.flatMap(objectUpdated -> {
+					producer.send(objectUpdated);
+					return Mono.just(ResponseEntity
+							.ok()
+							.contentType(MediaType.APPLICATION_JSON)
+							.body(objectUpdated));
+				})
 				.defaultIfEmpty(ResponseEntity
 						.noContent()
 						.build());
