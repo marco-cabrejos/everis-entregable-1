@@ -7,3 +7,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/purchase
+
+topic:
+  name: purchase-topic
+  partitions: 1
+  replicas: 1
