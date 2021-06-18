@@ -1,0 +1,9 @@
+server:
+  port: 8098
+  
+spring:
+  application:
+    name: deposit-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/deposit
