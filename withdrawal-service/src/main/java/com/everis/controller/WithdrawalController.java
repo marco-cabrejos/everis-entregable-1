@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.everis.dto.Response;
 import com.everis.model.Withdrawal;
+import com.everis.service.IAccountService;
 import com.everis.service.IWithdrawalService;
 import com.everis.topic.producer.WithdrawalProducer;
 
@@ -26,18 +28,38 @@ public class WithdrawalController {
 	@Autowired
 	private IWithdrawalService service;
 	@Autowired
+	private IAccountService accountService;
+	
+	@Autowired
 	private WithdrawalProducer withdrawalProducer;
 	
 	@PostMapping
-	public Mono<ResponseEntity<Withdrawal>> create(@RequestBody Withdrawal body, final ServerHttpRequest request){
-		return service.create(body)
-				.flatMap(p -> {
-					withdrawalProducer.sendWithdrawalAccountTopic(p);
-					return Mono.just(ResponseEntity
-							.created(URI.create(request.getURI().toString().concat(body.getId())))
-							.contentType(MediaType.APPLICATION_JSON)
-							.body(p));
+	public Mono<ResponseEntity<Response>> create(@RequestBody Withdrawal body, final ServerHttpRequest request){
+		return accountService.findByAccountNumber(body.getAccount().getAccountNumber())
+				.flatMap(account->{
+					if(body.getAmount()>account.getCurrentBalance()) {
+						return Mono.just(ResponseEntity
+								.badRequest()
+								.body(Response
+										.builder()
+										.error("El monto a retirar excede al saldo disponible")
+										.build()));
+					}
+					account.setCurrentBalance(account.getCurrentBalance()-body.getAmount());
+					body.setAccount(account);
+					return service.create(body).flatMap(created->{
+						return Mono.just(ResponseEntity
+								.ok()
+								.contentType(MediaType.APPLICATION_JSON)
+								.body(Response.builder().data(body).build()));
 					});
+				})
+				.defaultIfEmpty(ResponseEntity
+						.badRequest()
+						.body(Response
+								.builder()
+								.error("No es posible realizar el retiro, el número de cuenta no existe")
+								.build()));
 	}
 	
 	@GetMapping

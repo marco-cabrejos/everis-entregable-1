@@ -22,4 +22,7 @@ public class Account {
 	@Field(name = "accountNumber")
 	private String accountNumber;
 	
+	@Field(name = "currentBalance")
+	private Double currentBalance;
+	
 }
