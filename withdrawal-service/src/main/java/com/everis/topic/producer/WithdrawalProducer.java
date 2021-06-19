@@ -9,9 +9,9 @@ import com.everis.model.Withdrawal;
 @Component
 public class WithdrawalProducer {
 	@Autowired
-	private KafkaTemplate<String, Withdrawal> kafkaTemplate;
+	private KafkaTemplate<String, Object> kafkaTemplate;
 
-	private String withdrawalAccountTopic = "withdrawal-account-topic";
+	private String withdrawalAccountTopic = "created-withdrawal-topic";
 
 	public void sendWithdrawalAccountTopic(Withdrawal o) {
 		kafkaTemplate.send(withdrawalAccountTopic, o);

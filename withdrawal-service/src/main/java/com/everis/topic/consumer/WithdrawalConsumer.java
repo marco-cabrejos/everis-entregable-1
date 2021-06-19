@@ -12,7 +12,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 @Component
-public class Consumer {
+public class WithdrawalConsumer {
 	@Autowired
 	private IAccountService accountService;
 	

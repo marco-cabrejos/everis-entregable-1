@@ -48,6 +48,7 @@ public class WithdrawalController {
 					account.setCurrentBalance(account.getCurrentBalance()-body.getAmount());
 					body.setAccount(account);
 					return service.create(body).flatMap(created->{
+						withdrawalProducer.sendWithdrawalAccountTopic(body);
 						return Mono.just(ResponseEntity
 								.ok()
 								.contentType(MediaType.APPLICATION_JSON)
