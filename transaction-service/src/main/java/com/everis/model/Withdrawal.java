@@ -31,6 +31,6 @@ public class Withdrawal {
 
 	@Field(name = "withdrawalDate")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime withdrawalDate = LocalDateTime.now();
+	private LocalDateTime withdrawalDate;
 
 }
