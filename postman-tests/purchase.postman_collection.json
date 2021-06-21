@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "b46e1e64-68aa-47dd-91e4-f78d0ad2e88e",
+		"name": "purchase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/purchase/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"purchase",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product\": {\r\n        \"id\" : \"60d0a3127d100c7bd008077c\"\r\n    },\r\n    \"customerOwner\": [\r\n        {\r\n            \"identityNumber\" : \"73267251\"\r\n        }\r\n    ],\r\n    \"authorizedSigner\": [\r\n    ],\r\n    \"amount\" : 50000,\r\n    \"purchaseDate\" : \"2021-06-17\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/purchase/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"purchase",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/purchase/60cc0006ba4b8657ecedd226",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"purchase",
+						"60cc0006ba4b8657ecedd226"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product\": {\r\n        \"productName\": \"CREDITO\"\r\n    },\r\n    \"customerOwner\": [\r\n        {\r\n            \"name\": \"MARCOANTONIO\",\r\n            \"customerType\": \"PERSONAL\"\r\n        }\r\n    ],\r\n    \"authorizedSigner\": [],\r\n    \"amount\": 100.0,\r\n    \"purchaseDate\": \"2021-06-17T00:00:00.000+00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/purchase/60cc0006ba4b8657ecedd226",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"purchase",
+						"60cc0006ba4b8657ecedd226"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

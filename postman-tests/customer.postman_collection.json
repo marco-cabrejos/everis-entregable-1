@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "a7f6b15a-3f9d-458c-bf9a-bc0c7eee4243",
+		"name": "customer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customer/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create business customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"B&C PLASTICAUCHOS S.A.C.\",\r\n    \"identityType\" : \"RUC\",\r\n    \"identityNumber\" : \"20545399599\",\r\n    \"customerType\" : \"EMPRESARIAL\",\r\n    \"address\" : \"ZARATE - SJL - LIMA\",\r\n    \"phoneNumber\" : \"+51987654321\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create personal customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"MARCOANTONIO CABREJOS MALMA\",\r\n    \"identityType\" : \"DNI\",\r\n    \"identityNumber\" : \"73267251\",\r\n    \"customerType\" : \"PERSONAL\",\r\n    \"address\" : \"SAN JUAN DE LURIGANCHO\",\r\n    \"phoneNumber\" : \"+51987654321\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customer/60cac643215fb054d8d78a78",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"60cac643215fb054d8d78a78"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Marcoantonio de Jesus Cabrejos Malma\",\r\n    \"identityType\" : \"DNI\",\r\n    \"identityNumber\" : \"73267251\",\r\n    \"customerType\" : \"PERSONAL\",\r\n    \"address\" : \"Calle Victor Humareda MZ x Lote 22 - Chorrillos - Lima - Lima - Peru\",\r\n    \"phoneNumber\" : \"+51941404386\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/60ca9a2129a355506cdf4e1e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"60ca9a2129a355506cdf4e1e"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

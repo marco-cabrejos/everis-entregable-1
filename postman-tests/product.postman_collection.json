@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "c6e2828b-0944-46aa-bec8-99b86ba02803",
+		"name": "product",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create product 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \t\"productName\":\"AHORRO\",\r\n\t\"productType\":\"PASIVO\",\r\n    \"condition\":{\r\n        \"customerTypeTarget\":[\r\n            \"PERSONAL\"\r\n        ],\r\n        \"hasMaintenanceFee\":false,\r\n        \"maintenanceFee\":null,\r\n        \"hasMonthlyTransactionLimit\":true,\r\n        \"monthlyTransactionLimit\":3,\r\n        \"hasDailyWithdrawalTransactionLimit\":null,\r\n        \"dailyWithdrawalTransactionLimit\":null,\r\n        \"hasDailyDepositTransactionLimit\":null,\r\n        \"dailyDepositTransactionLimit\":null,\r\n        \"creditPerPersonLimit\":null,\r\n        \"creditPerBusinessLimit\":null,\r\n        \"productPerPersonLimit\":1,\r\n        \"productPerBusinessLimit\":0\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create product 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \t\"productName\":\"CUENTA CORRIENTE\",\r\n\t\"productType\":\"PASIVO\",\r\n    \"condition\":{\r\n        \"customerTypeTarget\":[\r\n            \"PERSONAL\",\r\n            \"EMPRESARIAL\"\r\n        ],\r\n        \"hasMaintenanceFee\":true,\r\n        \"maintenanceFee\":12.00,\r\n        \"hasMonthlyTransactionLimit\":false,\r\n        \"monthlyTransactionLimit\":null,\r\n        \"hasDailyWithdrawalTransactionLimit\":null,\r\n        \"dailyWithdrawalTransactionLimit\":null,\r\n        \"hasDailyDepositTransactionLimit\":null,\r\n        \"dailyDepositTransactionLimit\":null,\r\n        \"creditPerPersonLimit\":null,\r\n        \"creditPerBusinessLimit\":null,\r\n        \"productPerPersonLimit\":1,\r\n        \"productPerBusinessLimit\":9999999\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create product 3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \t\"productName\":\"PLAZO FIJO\",\r\n\t\"productType\":\"PASIVO\",\r\n    \"condition\":{\r\n        \"customerTypeTarget\":[\r\n            \"PERSONAL\"\r\n        ],\r\n        \"hasMaintenanceFee\":false,\r\n        \"maintenanceFee\":null,\r\n        \"hasMonthlyTransactionLimit\":false,\r\n        \"monthlyTransactionLimit\":null,\r\n        \"hasDailyWithdrawalTransactionLimit\":true,\r\n        \"dailyWithdrawalTransactionLimit\":1,\r\n        \"hasDailyDepositTransactionLimit\":true,\r\n        \"dailyDepositTransactionLimit\":1,\r\n        \"creditPerPersonLimit\":null,\r\n        \"creditPerBusinessLimit\":null,\r\n        \"productPerPersonLimit\":1,\r\n        \"productPerBusinessLimit\":0\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create product 4",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \t\"productName\":\"CREDITO PERSONAL\",\r\n\t\"productType\":\"ACTIVO\",\r\n    \"condition\":{\r\n        \"customerTypeTarget\":[\r\n            \"PERSONAL\"\r\n        ],\r\n        \"hasMaintenanceFee\":false,\r\n        \"maintenanceFee\":null,\r\n        \"hasMonthlyTransactionLimit\":false,\r\n        \"monthlyTransactionLimit\":null,\r\n        \"hasDailyWithdrawalTransactionLimit\":null,\r\n        \"dailyWithdrawalTransactionLimit\":null,\r\n        \"hasDailyDepositTransactionLimit\":null,\r\n        \"dailyDepositTransactionLimit\":null,\r\n        \"creditPerPersonLimit\":null,\r\n        \"creditPerBusinessLimit\":null,\r\n        \"productPerPersonLimit\":1,\r\n        \"productPerBusinessLimit\":0\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create product 5",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \t\"productName\":\"CREDITO EMPRESARIAL\",\r\n\t\"productType\":\"ACTIVO\",\r\n    \"condition\":{\r\n        \"customerTypeTarget\":[\r\n            \"EMPRESARIAL\"\r\n        ],\r\n        \"hasMaintenanceFee\":false,\r\n        \"maintenanceFee\":null,\r\n        \"hasMonthlyTransactionLimit\":false,\r\n        \"monthlyTransactionLimit\":null,\r\n        \"hasDailyWithdrawalTransactionLimit\":null,\r\n        \"dailyWithdrawalTransactionLimit\":null,\r\n        \"hasDailyDepositTransactionLimit\":null,\r\n        \"dailyDepositTransactionLimit\":null,\r\n        \"creditPerPersonLimit\":null,\r\n        \"creditPerBusinessLimit\":null,\r\n        \"productPerPersonLimit\":0,\r\n        \"productPerBusinessLimit\":1\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create product 6",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \t\"productName\":\"TARJETA DE CREDITO\",\r\n\t\"productType\":\"ACTIVO\",\r\n    \"condition\":{\r\n        \"customerTypeTarget\":[\r\n            \"PERSONAL\",\r\n            \"EMPRESARIAL\"\r\n        ],\r\n        \"hasMaintenanceFee\":false,\r\n        \"maintenanceFee\":null,\r\n        \"hasMonthlyTransactionLimit\":false,\r\n        \"monthlyTransactionLimit\":null,\r\n        \"hasDailyWithdrawalTransactionLimit\":null,\r\n        \"dailyWithdrawalTransactionLimit\":null,\r\n        \"hasDailyDepositTransactionLimit\":null,\r\n        \"dailyDepositTransactionLimit\":null,\r\n        \"creditPerPersonLimit\":null,\r\n        \"creditPerBusinessLimit\":null,\r\n        \"productPerPersonLimit\":9999999,\r\n        \"productPerBusinessLimit\":9999999\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/product/60d088b7d3374c1f95782eed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						"60d088b7d3374c1f95782eed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \t\"productName\":\"TARJETA DE CREDITO\",\r\n\t\"productType\":\"ACTIVO\",\r\n    \"condition\":{\r\n        \"customerTypeTarget\":[\r\n            \"PERSONAL\",\r\n            \"EMPRESARIAL\"\r\n        ],\r\n        \"hasMaintenanceFee\":false,\r\n        \"maintenanceFee\":null,\r\n        \"hasMonthlyTransactionLimit\":false,\r\n        \"monthlyTransactionLimit\":null,\r\n        \"hasDailyWithdrawalTransactionLimit\":null,\r\n        \"dailyWithdrawalTransactionLimit\":null,\r\n        \"hasDailyDepositTransactionLimit\":null,\r\n        \"dailyDepositTransactionLimit\":null,\r\n        \"creditPerPersonLimit\":null,\r\n        \"creditPerBusinessLimit\":null,\r\n        \"productPerPersonLimit\":999999,\r\n        \"productPerBusinessLimit\":999999\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/60d0983ffcfb172c00973723",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						"60d0983ffcfb172c00973723"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
