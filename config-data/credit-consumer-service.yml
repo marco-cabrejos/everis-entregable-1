@@ -1,0 +1,17 @@
+server:
+  port: 8097
+  
+spring:
+  application:
+    name: credit-consumer-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/credit
+      
+topic:
+  name: credit-consumer-topic
+  partitions: 1
+  replicas: 1
+
+kafka:
+  uri: localhost:9092

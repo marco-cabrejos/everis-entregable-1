@@ -1,15 +1,15 @@
 server:
-  port: 8095
+  port: 8098
   
 spring:
   application:
-    name: withdrawal-service
+    name: credit-payment-service
   data:
     mongodb:
-      uri: mongodb://localhost:27017/withdrawal
-
+      uri: mongodb://localhost:27017/payment
+      
 topic:
-  name: withdrawal-topic
+  name: credit-payment-topic
   partitions: 1
   replicas: 1
 
