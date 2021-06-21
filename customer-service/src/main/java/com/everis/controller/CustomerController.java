@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.everis.model.Customer;
 import com.everis.service.ICustomerService;
+import com.everis.topic.producer.CustomerProducer;
 
 import reactor.core.publisher.Mono;
 
@@ -27,13 +28,8 @@ public class CustomerController {
 	@Autowired
 	private ICustomerService service;
 	
-	@GetMapping("/hola")
-	public Mono<ResponseEntity<String>> hola(){
-		return Mono.just(ResponseEntity
-				.ok()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body("Hola customers"));
-	}
+	@Autowired
+	private CustomerProducer producer;
 	
 	@GetMapping
 	public Mono<ResponseEntity<List<Customer>>> findAll(){ 
@@ -65,9 +61,13 @@ public class CustomerController {
 	@PostMapping
 	public Mono<ResponseEntity<Customer>> create(@RequestBody Customer customer, final ServerHttpRequest request){
 		return service.create(customer)
-				.map(createdObject->ResponseEntity.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
-						.contentType(MediaType.APPLICATION_JSON)
-						.body(createdObject));
+				.map(createdObject->{
+					producer.sendSavedCustomerTopic(createdObject);
+					return ResponseEntity
+							.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
+							.contentType(MediaType.APPLICATION_JSON)
+							.body(createdObject);
+				});
 	}
 	
 	@PutMapping("/{id}")
@@ -86,10 +86,13 @@ public class CustomerController {
 					return a;
 				})
 				.flatMap(service::update)
-				.map(objectUpdated->ResponseEntity
-						.ok()
-						.contentType(MediaType.APPLICATION_JSON)
-						.body(objectUpdated))
+				.map(objectUpdated->{
+					producer.sendSavedCustomerTopic(objectUpdated);
+					return ResponseEntity
+							.ok()
+							.contentType(MediaType.APPLICATION_JSON)
+							.body(objectUpdated);
+				})
 				.defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 	
