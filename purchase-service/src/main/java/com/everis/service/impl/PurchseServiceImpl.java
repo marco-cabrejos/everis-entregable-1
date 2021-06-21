@@ -9,7 +9,7 @@ import com.everis.repository.IRepository;
 import com.everis.service.IPurchaseService;
 
 @Service
-public class PurchseService extends CRUDServiceImpl<Purchase, String> implements IPurchaseService {
+public class PurchseServiceImpl extends CRUDServiceImpl<Purchase, String> implements IPurchaseService {
 
 	@Autowired
 	private IPurchaseRepository repository;

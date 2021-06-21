@@ -2,6 +2,7 @@ package com.everis.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.everis.dto.Response;
+import com.everis.model.Customer;
 import com.everis.model.Purchase;
+import com.everis.service.ICustomerService;
+import com.everis.service.IProductService;
 import com.everis.service.IPurchaseService;
 import com.everis.topic.producer.PurchaseProducer;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -28,20 +34,14 @@ public class PurchaseController {
 
 	@Autowired
 	private IPurchaseService service;
+	@Autowired
+	private ICustomerService customerService;
+	@Autowired
+	private IProductService productService;
 	
 	@Autowired
 	private PurchaseProducer producer;
-	
-	@GetMapping("/welcome")
-	public Mono<ResponseEntity<String>> welcome(){
-		 
-		return Mono.just(ResponseEntity
-				.ok()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body("Welcome Purchase"));
-
-	}
-	
+		
 	@GetMapping
 	public Mono<ResponseEntity<List<Purchase>>> findAll(){ 
 		
@@ -62,7 +62,6 @@ public class PurchaseController {
 	
 	@GetMapping("/{id}")
 	public Mono<ResponseEntity<Purchase>> findById(@PathVariable("id") String id){
-		
 		return service.findById(id)
 				.map(objectFound -> ResponseEntity
 						.ok()
@@ -71,18 +70,32 @@ public class PurchaseController {
 				.defaultIfEmpty(ResponseEntity
 						.noContent()
 						.build());
-		
 	}
 		
 	@PostMapping
-	public Mono<ResponseEntity<Purchase>> create(@RequestBody Purchase customer, final ServerHttpRequest request){
-		
-		return service.create(customer)
+	public Mono<ResponseEntity<Response>> create(@RequestBody Purchase purchase, final ServerHttpRequest request){
+		Mono<Purchase> monoPurchase = Mono.just(purchase);
+		Flux<Customer> fluxCustomer = Flux.fromIterable(purchase.getCustomerOwner());
+		return fluxCustomer
+		.flatMap(p->customerService.findByIdentityNumber(p.getIdentityNumber()))
+		.collectList()
+		.flatMap(list->{
+			list.stream().filter(Objects::nonNull).filter(c->c.getId()!=null);
+			if(list.size()!=purchase.getCustomerOwner().size()) {
+				return Mono.just(ResponseEntity
+						.badRequest()
+						.body(Response.builder().error("El cliente ingresado no existe.").build()));
+			}
+			return Mono.just(ResponseEntity
+					.ok()
+					.body(Response.builder().data(list).build()));
+		});
+		/*return service.create(purchase)
 				.map(createdObject -> ResponseEntity
 						.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(createdObject));
-				
+			*/	
 	}
 	
 	@PutMapping("/{id}")
