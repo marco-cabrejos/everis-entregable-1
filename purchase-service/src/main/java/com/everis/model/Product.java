@@ -12,19 +12,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "product")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Document(collection = "product")
 @Data
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE) 
 public class Product {
+	
 	@Id
 	private String id;
+	
 	@Field(name = "productName")
 	private String productName;
+	
 	@Field(name = "productType")
 	private String productType;
+	
 	@Field(name = "condition")
 	private Condition condition;
+
 }

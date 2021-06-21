@@ -9,12 +9,17 @@ import com.everis.model.Purchase;
 
 @Component
 public class PurchaseProducer {
+	
 	@Autowired
 	private KafkaTemplate<String, Object> kafkaTemplate;
+	
 	@Value("${topic.name}")
 	private String kafkaTopic;
 
 	public void send(Purchase message) {
+		
 		kafkaTemplate.send(kafkaTopic, message);
+		
 	}
+	
 }

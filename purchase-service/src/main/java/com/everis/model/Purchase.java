@@ -1,6 +1,6 @@
 package com.everis.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AccessLevel;
@@ -31,19 +32,25 @@ public class Purchase {
 
 	@Field(name = "product")
 	private Product product;
-	
-	@NotNull
-	@NotEmpty
+
+	@NotNull @NotEmpty
 	@Field(name = "customerOwner")
 	private List<Customer> customerOwner;
 
 	@Field(name = "authorizedSigner")
 	private List<Customer> authorizedSigner;
 	
-	@Field(name = "amount")
-	private double amount;
+	@Field(name = "amountIni")
+	private double amountIni;
+	
+	@Field(name = "amountFin")
+	private double amountFin;
+	
+	@Field(name = "cardNumber")
+	private String cardNumber;
 	
 	@Field(name = "purchaseDate")
-	private Date purchaseDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime purchaseDate;
 	
 }

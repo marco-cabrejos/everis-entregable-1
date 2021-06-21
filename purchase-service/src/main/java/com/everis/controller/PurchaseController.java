@@ -188,7 +188,7 @@ public class PurchaseController {
 					a.setProduct(purchase.getProduct());
 					a.setCustomerOwner(purchase.getCustomerOwner());
 					a.setAuthorizedSigner(purchase.getAuthorizedSigner());
-					a.setAmount(purchase.getAmount());
+					a.setAmountFin(purchase.getAmountFin());
 					a.setPurchaseDate(purchase.getPurchaseDate());
 					return a;
 				})

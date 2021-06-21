@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.everis.model.Customer;
 import com.everis.model.Purchase;
 import com.everis.repository.IPurchaseRepository;
 import com.everis.repository.IRepository;
@@ -26,9 +27,16 @@ public class PurchseServiceImpl extends CRUDServiceImpl<Purchase, String> implem
 		
 	}
 
+//	@Override
+//	public Flux<Purchase> findByCustomerOwner(List<Customer> customers) {
+//		
+//		return repository.findByCustomerOwner(customers);
+//		
+//	}
+
 	@Override
 	public Mono<List<Purchase>> findByIdentityNumberAndProductID(String identityNumber, String idProduct) {
 		return repository.findByIdentityNumberAndProductID(identityNumber,idProduct);
 	}
-
+	
 }
