@@ -1,7 +1,6 @@
 package com.everis;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -17,9 +16,13 @@ public class TransactionServiceApplication {
 
 	@Bean
 	ObjectMapper objectMapper() {
+		
 		ObjectMapper objectMapper = new ObjectMapper();
+		
 		objectMapper.registerModule(new JavaTimeModule());
+		
 		return objectMapper;
+		
 	}
 
 }

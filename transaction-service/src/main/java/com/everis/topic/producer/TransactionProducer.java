@@ -14,8 +14,16 @@ public class TransactionProducer {
 
 	private String withdrawalAccountTopic = "created-transaction-topic";
 
-	public void sendCreatedTransactionTopic(Transaction o) {
+	public void sendCreatedTransactionAccountTopic(Transaction o) {
+		
 		kafkaTemplate.send(withdrawalAccountTopic, o);
+		
+	}
+	
+	public void sendCreatedTransactionPurchaseTopic(Transaction o) {
+		
+		kafkaTemplate.send(withdrawalAccountTopic, o);
+		
 	}
 	
 }

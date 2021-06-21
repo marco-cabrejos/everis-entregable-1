@@ -7,6 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public abstract class CRUDServiceImpl<T, ID> implements ICRUDService<T, ID> {
+	
 	protected abstract IRepository<T, ID> getRepository();
 
 	@Override
@@ -18,7 +19,7 @@ public abstract class CRUDServiceImpl<T, ID> implements ICRUDService<T, ID> {
 	public Flux<T> findAll() {
 		return getRepository().findAll();
 	}
-
+	
 	@Override
 	public Mono<T> findById(ID id) {
 		return getRepository().findById(id);

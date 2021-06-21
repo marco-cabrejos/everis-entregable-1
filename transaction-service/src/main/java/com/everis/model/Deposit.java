@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
 
-@Document(collection = "withdrawal")
+@Document(collection = "deposit")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-public class Withdrawal {
+public class Deposit {
 
 	@Id
 	private String id;
@@ -31,8 +31,8 @@ public class Withdrawal {
 	@Field(name = "description")
 	private String description;
 
-	@Field(name = "withdrawalDate")
+	@Field(name = "depositDate")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime withdrawalDate;
+	private LocalDateTime depositDate;
 
 }

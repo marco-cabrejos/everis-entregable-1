@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Builder;
@@ -16,6 +17,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Transaction {
+	
 	@Id
 	private String id;
 
@@ -28,10 +30,14 @@ public class Transaction {
 	@Field(name = "account")
 	private Account account;
 
+	@Field(name = "purchase")
+	private Purchase purchase;
+
 	@Field(name = "description")
 	private String description;
 
-	@Builder.Default
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@Field(name = "transactionDate")
-	private LocalDateTime transactionDate = LocalDateTime.now();
+	private LocalDateTime transactionDate;
+	
 }
