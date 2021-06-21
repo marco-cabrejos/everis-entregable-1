@@ -79,13 +79,10 @@ public class PurchaseController {
 	@PostMapping
 	public Mono<ResponseEntity<Response>> create(@Valid @RequestBody Purchase purchase, final ServerHttpRequest request){
 		Mono<Purchase> monoPurchase = Mono.just(purchase.toBuilder().build());
-		//Flux<Customer> fluxCustomer2 = Flux.fromIterable(purchase.getCustomerOwner());
-		
 		Mono<Product> monoProduct = productService.findById(purchase.getProduct().getId()).defaultIfEmpty(Product.builder().build());
 		Mono<List<Customer>> monoListCust = Flux.fromIterable(purchase.getCustomerOwner())
 				.flatMap(p1->customerService.findByIdentityNumber(p1.getIdentityNumber()))
 				.collectList();
-		
 		return monoPurchase
 		.zipWith(monoProduct,(p,b)->{
 			p.setProduct(b);
@@ -133,8 +130,32 @@ public class PurchaseController {
 				isPersonal = quantityPersonalOwners==quantityOwners&&quantityBusinessOwners==0;
 			}
 			if(isPersonal) {
-				//List<Purchase> lista = service.findByCustomerOwner(purchasebd.getCustomerOwner()).collectList());
-				System.out.println("es personal");
+				return service.findAll()
+				.collectList()
+				.flatMap(p->{
+					int i=0;
+					for (Purchase purchase2 : p) {
+						for (Customer customer : purchase2.getCustomerOwner()) {
+							for (Customer customer2 : purchasebd.getCustomerOwner()) {
+								if(customer.getIdentityNumber().equals(customer2.getIdentityNumber())
+										&& purchase2.getProduct().getId().equals(purchasebd.getProduct().getId())) {
+									i++;
+								}
+							}
+						}
+					}
+					if(i>0) {
+						return Mono.just(ResponseEntity
+								.badRequest()
+								.body(Response.builder().error("El cliente ya cuenta con el producto "+purchasebd.getProduct().getProductType().concat("-")
+										.concat(purchasebd.getProduct().getProductName())).build()));
+					}
+					return service.create(purchasebd)
+							.flatMap(createdObject -> Mono.just(ResponseEntity
+									.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
+									.contentType(MediaType.APPLICATION_JSON)
+									.body(Response.builder().data(createdObject).build())));
+				});
 			}else if(isEmpresarial) {
 				System.out.println("es empresarial");
 				if(!purchasebd.toBuilder().build().getProduct().getCondition()
@@ -145,31 +166,13 @@ public class PurchaseController {
 									.concat(purchasebd.getProduct().getProductName().concat(" a un cliente EMPRESARIAL"))).build()));
 				}
 			}
-			
-//			return Mono.just(purchasebd);
-			/**
-			 * Las cuentas bancarias empresariales deben tener un solo titular y cero o más firmantes autorizados
-			 */
-			/*
-			if(purchasebd.getProduct().getCondition().getCustomerTypeTarget().stream().filter(o->o.equals("EMPRESARIAL")).findFirst().isPresent()) {
-				System.out.println("NO ES EMPREPSARIAL");
-			}else {
-				
-			}*/
 			return service.create(purchasebd)
 					.flatMap(createdObject -> Mono.just(ResponseEntity
 							.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
 							.contentType(MediaType.APPLICATION_JSON)
 							.body(Response.builder().data(createdObject).build())));
-			//return ResponseEntity.ok().body(Response.builder().data(purchasebd).build());
+			//return Mono.just(ResponseEntity.ok().body(Response.builder().data(purchasebd).build()));
 		});
-//		.map(a->a);
-		/*return service.create(purchase)
-				.map(createdObject -> ResponseEntity
-						.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
-						.contentType(MediaType.APPLICATION_JSON)
-						.body(createdObject));
-			*/	
 	}
 	
 	@PutMapping("/{id}")
