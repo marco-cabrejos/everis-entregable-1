@@ -1,6 +1,7 @@
 package com.everis.controller;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.everis.dto.Response;
 import com.everis.model.Account;
 import com.everis.service.IAccountService;
-import com.everis.topic.AccountProducer;
+import com.everis.topic.producer.AccountProducer;
 
 import reactor.core.publisher.Mono;
 
@@ -50,12 +52,12 @@ public class AccountController {
 				.flatMap(list -> {
 					return list.size() > 0 ? 
 							Mono.just(ResponseEntity
-								.ok()
-								.contentType(MediaType.APPLICATION_JSON)
-								.body(list)) :
+									.ok()
+									.contentType(MediaType.APPLICATION_JSON)
+									.body(list)) :
 							Mono.just(ResponseEntity
-								.noContent()
-								.build());
+									.noContent()
+									.build());
 				});
 				
 	}
@@ -73,19 +75,33 @@ public class AccountController {
 						.build());
 		
 	}
-	
-	@PostMapping
-	public Mono<ResponseEntity<Account>> create(@RequestBody Account account, final ServerHttpRequest request){
 		
-		return service.create(account)
-				.flatMap(createdObject -> {
-					producer.sendCreatedAccount(createdObject);
-					return Mono.just(ResponseEntity
-							.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
-							.contentType(MediaType.APPLICATION_JSON)
-							.body(createdObject));
+	@PostMapping
+	public Mono<ResponseEntity<Response>> create(@RequestBody Account account, final ServerHttpRequest request){
+		
+		return service.findAll().filter(list -> list.getAccountNumber().equals(account.getAccountNumber()))
+				.collectList()
+				.flatMap(list -> {
+					return list.size() > 0 ?							
+							Mono.just(ResponseEntity
+								.badRequest()
+								.body(Response
+										.builder()
+										.data("La cuenta " + account.getAccountNumber() + " ya existe")
+										.build())) :							
+							service.create(account)
+								.flatMap(createdObject -> {
+									producer.sendCreatedAccount(createdObject);
+									return Mono.just(ResponseEntity
+											.created(URI.create(request.getURI().toString().concat(createdObject.getId())))
+											.contentType(MediaType.APPLICATION_JSON)
+											.body(Response
+													.builder()
+													.data(createdObject)
+													.build()));
+								});
 				});
-				
+		
 	}
 	
 	@PutMapping("/{id}")
@@ -97,12 +113,6 @@ public class AccountController {
 		
 		return customerDatabase
 				.zipWith(customerModification, (a,b) -> {
-					a.setId(id);
-					a.setAccountNumber(account.getAccountNumber());
-					a.setDateOpened(account.getDateOpened());
-					a.setDateClosed(account.getDateClosed());
-					a.setPurchase(account.getPurchase());
-					a.setCurrentBalance(account.getCurrentBalance());
 					a.setMaintenance_charge(account.getMaintenance_charge());
 					a.setLimitMovementsMonth(account.getLimitMovementsMonth());
 					a.setDateMovement(account.getDateMovement());
@@ -116,21 +126,34 @@ public class AccountController {
 				.defaultIfEmpty(ResponseEntity
 						.noContent()
 						.build());
-		
+				
 	}
 	
 	@DeleteMapping("/{id}")
-	public Mono<ResponseEntity<String>> delete(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Response>> delete(@PathVariable("id") String id){
 		
-		return service.delete(id)
-				.map(objectDeleted -> ResponseEntity
+		Mono<Account> customerDatabase = service.findById(id);
+		
+		return customerDatabase
+				.zipWith(customerDatabase, (a,b) -> {
+					a.setDateClosed(LocalDateTime.now());
+					return a;
+				})
+				.flatMap(service::update)
+				.map(objectUpdated -> ResponseEntity
 						.ok()
 						.contentType(MediaType.APPLICATION_JSON)
-						.body("Documento Eliminado"))
+						.body(Response
+								.builder()
+								.data("Cuenta eliminada")
+								.build()))
 				.defaultIfEmpty(ResponseEntity
-						.noContent()
-						.build());
-				
+						.badRequest()
+						.body(Response
+								.builder()
+								.data("La cuenta no existe")
+								.build()));
+		
 	}
 	
 }

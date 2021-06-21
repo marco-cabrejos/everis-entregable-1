@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.everis.model.Account;
 import com.everis.model.Transaction;
 import com.everis.service.IAccountService;
+import com.everis.topic.producer.AccountProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import reactor.core.Disposable;
@@ -14,26 +15,38 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class Consumer {
+
 	@Autowired
 	private ObjectMapper objectMapper;
+	
 	@Autowired
 	private IAccountService accountService;
+	
+	@Autowired
+	private AccountProducer producer;
 
 	@KafkaListener(topics = "created-transaction-topic", groupId = "account-group")
 	public Disposable retrieveCreatedTransaction(String data) throws Exception {
-		//System.out.println(data);
+		
 		Transaction transaction = objectMapper.readValue(data, Transaction.class);
+		
 		Mono<Account> monoAccount = accountService.findById(transaction.getAccount().getId());
+		
 		Mono<Transaction> monoTransaction = Mono.just(transaction);
+		
 		return monoAccount
-				.zipWith(monoTransaction, (a,b)->{
-					//System.out.println(transaction);
+				.zipWith(monoTransaction, (a,b) -> {
 					if(transaction.getTransactionType().equals("RETIRO")) {
-						a.setCurrentBalance(a.getCurrentBalance()-transaction.getTransactionAmount());
+						a.setCurrentBalance(a.getCurrentBalance() - transaction.getTransactionAmount());
+					} else if (transaction.getTransactionType().equals("DEPOSITO")) {
+						a.setCurrentBalance(a.getCurrentBalance() + transaction.getTransactionAmount());						
 					}
+					producer.sendCreatedAccount(a);
 					return a;
 				})
 				.flatMap(accountService::update)
 				.subscribe();
+		
 	}
+	
 }

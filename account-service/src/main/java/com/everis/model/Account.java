@@ -1,11 +1,12 @@
 package com.everis.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
@@ -22,13 +23,15 @@ public class Account {
 	private String accountNumber;
 	
 	@Field(name = "dateOpened")
-	private Date dateOpened;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dateOpened = LocalDateTime.now();
 	
 	@Field(name = "dateClosed")
-	private Date dateClosed;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dateClosed = null;
 	
 	@Field(name = "purchase")
-	private Purchase purchase;
+	private Purchase purchase = new Purchase();
 	
 	@Field(name = "currentBalance")
 	private double currentBalance;
