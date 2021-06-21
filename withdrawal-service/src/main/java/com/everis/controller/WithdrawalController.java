@@ -1,6 +1,6 @@
 package com.everis.controller;
 
-import java.net.URI;
+//import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +25,22 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/withdrawal")
 public class WithdrawalController {
+	
 	@Autowired
 	private IWithdrawalService service;
+	
 	@Autowired
 	private IAccountService accountService;
 	
 	@Autowired
 	private WithdrawalProducer withdrawalProducer;
-	
+			
 	@PostMapping
-	public Mono<ResponseEntity<Response>> create(@RequestBody Withdrawal body, final ServerHttpRequest request){
-		return accountService.findByAccountNumber(body.getAccount().getAccountNumber())
-				.flatMap(account->{
-					if(body.getAmount()>account.getCurrentBalance()) {
+	public Mono<ResponseEntity<Response>> create(@RequestBody Withdrawal withdrawal, final ServerHttpRequest request) {
+		
+		return accountService.findByAccountNumber(withdrawal.getAccount().getAccountNumber())
+				.flatMap(account -> {
+					if(withdrawal.getAmount() > account.getCurrentBalance()) {
 						return Mono.just(ResponseEntity
 								.badRequest()
 								.body(Response
@@ -45,15 +48,19 @@ public class WithdrawalController {
 										.error("El monto a retirar excede al saldo disponible")
 										.build()));
 					}
-					account.setCurrentBalance(account.getCurrentBalance()-body.getAmount());
-					body.setAccount(account);
-					return service.create(body).flatMap(created->{
-						withdrawalProducer.sendWithdrawalAccountTopic(body);
-						return Mono.just(ResponseEntity
-								.ok()
-								.contentType(MediaType.APPLICATION_JSON)
-								.body(Response.builder().data(body).build()));
-					});
+					account.setCurrentBalance(account.getCurrentBalance() - withdrawal.getAmount());
+					withdrawal.setAccount(account);					
+					return service.create(withdrawal)
+							.flatMap(created -> {
+								withdrawalProducer.sendWithdrawalAccountTopic(withdrawal);
+								return Mono.just(ResponseEntity
+										.ok()
+										.contentType(MediaType.APPLICATION_JSON)
+										.body(Response
+												.builder()
+												.data(withdrawal)
+												.build()));
+							});
 				})
 				.defaultIfEmpty(ResponseEntity
 						.badRequest()
@@ -61,29 +68,36 @@ public class WithdrawalController {
 								.builder()
 								.error("No es posible realizar el retiro, el número de cuenta no existe")
 								.build()));
+		
 	}
 	
 	@GetMapping
-	public Mono<ResponseEntity<List<Withdrawal>>> findAll(){
+	public Mono<ResponseEntity<List<Withdrawal>>> findAll() {
+		
 		return service.findAll()
 				.collectList()
 				.flatMap(list->{
-					return list.size()>0?Mono.just(ResponseEntity
-							.ok()
-							.contentType(MediaType.APPLICATION_JSON)
-							.body(list)):
-								Mono.just(ResponseEntity.noContent().build());
+					return list.size() > 0 ? 
+							Mono.just(ResponseEntity
+									.ok()
+									.contentType(MediaType.APPLICATION_JSON)
+									.body(list)) :
+							Mono.just(ResponseEntity.noContent().build());
 				});
+		
 	}
 	
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Withdrawal>> findById(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Withdrawal>> findById(@PathVariable("id") String id) {
+		
 		return service.findById(id)
 				.map(foundObject->ResponseEntity
 						.ok()
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(foundObject))
 				.defaultIfEmpty(ResponseEntity.noContent().build());
+		
 	}
+	
 }
 

@@ -12,16 +12,13 @@ import lombok.Data;
 @Document(collection = "account")
 @Data
 public class Account {
-	@Id
-	/*@Field("id")
-	private String internalId;
 	
-	@Field(name = "accountId")*/
+	@Id
 	private String id;
 	
 	@Field(name = "accountNumber")
 	private String accountNumber;
-	
+
 	@Field(name = "currentBalance")
 	private Double currentBalance;
 	

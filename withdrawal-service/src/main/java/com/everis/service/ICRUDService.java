@@ -3,7 +3,8 @@ package com.everis.service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ICRUDService<T,ID> {
+public interface ICRUDService<T, ID> {
+	
 	Mono<T> create(T o);
 
 	Flux<T> findAll();
@@ -13,4 +14,5 @@ public interface ICRUDService<T,ID> {
 	Mono<T> update(T o);
 
 	Mono<Void> delete(ID id);
+	
 }
